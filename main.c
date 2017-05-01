@@ -1,9 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <memory.h>
+
+struct map_item {
+    char *startAddr;
+    char *endAddr;
+    char *protection;
+    char *offset;
+    char *major;
+    char *minor;
+    char *inode;
+    char *program;
+};
 
 int main(int argc, char *argv[])
 {
@@ -19,7 +28,7 @@ int main(int argc, char *argv[])
     {
         //One command line argument
         int pid = atoi(argv[1]);
-        printf("%d", pid);
+        //printf("%d", pid);
         pid_t return_pid = kill(pid, 0);
         if(return_pid == -1)
         {
@@ -29,21 +38,16 @@ int main(int argc, char *argv[])
         else if(return_pid == 0)
         {
             /* process still running */
-            printf("Process Found %d", return_pid);
+            //printf("Process Found %d", return_pid);
             char mapsStr[100];
             sprintf(mapsStr, "/proc/%d/maps", pid);
             char pagemapStr[100];
             sprintf(pagemapStr, "/proc/%d/pagemap", pid);
-            if( access(mapsStr, F_OK ) != -1 ) {
-                printf("maps exists");
-                if( access(pagemapStr, F_OK ) != -1 ) {
-                    printf("pagemap exists");
+            if( access(mapsStr, F_OK ) != -1 && access(pagemapStr, F_OK ) != -1 ) {
+                printf("maps and pagemap exists");
 
-                } else {
-                    printf("pagemap does not exists");
-                }
             } else {
-                printf("maps file not exists");
+                printf("maps or pagemage file does not exist");
             }
         }
     }
