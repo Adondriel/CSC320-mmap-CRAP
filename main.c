@@ -1,3 +1,8 @@
+/*
+ * Written By:
+ * Courtney Rush
+ * Adam Pine
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/wait.h>
