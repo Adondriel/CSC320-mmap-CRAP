@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <unistd.h>
+#include <memory.h>
 
 int main(int argc, char *argv[])
 {
@@ -27,7 +29,22 @@ int main(int argc, char *argv[])
         else if(return_pid == 0)
         {
             /* process still running */
-            printf("Yep! %d", return_pid);
+            printf("Process Found %d", return_pid);
+            char mapsStr[100];
+            sprintf(mapsStr, "/proc/%d/maps", pid);
+            char pagemapStr[100];
+            sprintf(pagemapStr, "/proc/%d/pagemap", pid);
+            if( access(mapsStr, F_OK ) != -1 ) {
+                printf("maps exists");
+                if( access(pagemapStr, F_OK ) != -1 ) {
+                    printf("pagemap exists");
+
+                } else {
+                    printf("pagemap does not exists");
+                }
+            } else {
+                printf("maps file not exists");
+            }
         }
     }
     return 0;
