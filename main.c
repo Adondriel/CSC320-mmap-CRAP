@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
         {
             /* process still running */
             //printf("Process Found %d", return_pid);
-            char mapsStr[100];
+            char mapsStr[25];
             sprintf(mapsStr, "/proc/%d/maps", pid);
-            char pagemapStr[100];
+            char pagemapStr[25];
             sprintf(pagemapStr, "/proc/%d/pagemap", pid);
             if( access(mapsStr, F_OK ) != -1 && access(pagemapStr, F_OK ) != -1 ) {
                 printf("maps and pagemap exists\n");
