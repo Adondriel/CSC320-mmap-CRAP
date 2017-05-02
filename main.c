@@ -35,12 +35,7 @@ int main(int argc, char *argv[])
         int pid = atoi(argv[1]);
         //printf("%d", pid);
         pid_t return_pid = kill(pid, 0);
-        if(return_pid == -1)
-        {
-            /* error */
-            printf("Nope %d", return_pid);
-        }
-        else
+        if(return_pid != -1)
         {
             /* process still running */
             //printf("Process Found %d", return_pid);
@@ -63,6 +58,11 @@ int main(int argc, char *argv[])
             } else {
                 printf("maps or pagemage file does not exist");
             }
+        }
+        else
+        {
+            /* error */
+            printf("Pid not found");
         }
     }
     return 0;
