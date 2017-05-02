@@ -21,15 +21,9 @@ struct map_item {
 
 int main(int argc, char *argv[])
 {
-    if(argc > 2)
-    {
-        printf("Too many arguments");
-    }
-    else if(argc < 2)
-    {
-        printf("One argument expected");
-    }
-    else
+
+
+    if(argc == 2)
     {
         //One command line argument
         int pid = atoi(argv[1]);
@@ -64,6 +58,10 @@ int main(int argc, char *argv[])
             /* error */
             printf("Pid not found");
         }
+    }
+    else
+    {
+        printf("Expected a total of 1 argument.");
     }
     return 0;
 }
