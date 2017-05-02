@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
             /* error */
             printf("Nope %d", return_pid);
         }
-        else if(return_pid == 0)
+        else
         {
             /* process still running */
             //printf("Process Found %d", return_pid);
@@ -49,7 +49,16 @@ int main(int argc, char *argv[])
             char pagemapStr[100];
             sprintf(pagemapStr, "/proc/%d/pagemap", pid);
             if( access(mapsStr, F_OK ) != -1 && access(pagemapStr, F_OK ) != -1 ) {
-                printf("maps and pagemap exists");
+                printf("maps and pagemap exists\n");
+                FILE *fp = fopen(mapsStr, "r");
+                char line[256];
+
+                //fp = fopen(mapsStr,"r");
+                while(fgets(line, sizeof(line), fp))
+                {
+                    printf("%s", line);
+                }
+                fclose(fp);
 
             } else {
                 printf("maps or pagemage file does not exist");
