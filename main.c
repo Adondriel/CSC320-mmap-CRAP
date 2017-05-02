@@ -22,7 +22,6 @@ struct map_item {
 int main(int argc, char *argv[])
 {
 
-
     if(argc == 2)
     {
         //One command line argument
@@ -48,9 +47,8 @@ int main(int argc, char *argv[])
                     printf("%s", line);
                 }
                 fclose(fp);
-
             } else {
-                printf("maps or pagemage file does not exist");
+                printf("maps or pagemap file does not exist");
             }
         }
         else
