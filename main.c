@@ -119,29 +119,28 @@ int main(int argc, char *argv[]) {
                     char newSegment[256];
                     strcpy(newSegment, tokens[5]);
                     char **addrTokens = tokenizeAddr(tokens[0]);
-                    //printf("%s %s\n", addrTokens[0], addrTokens[1]);
                     uint64_t buf;
-                    //printf("strt addr hex: %s\n", addrTokens[0]);
                     unsigned long startAddrL = strtol(addrTokens[0], NULL, 16);
                     unsigned long endAddrL = strtol(addrTokens[1], NULL, 16);
-                    //printf("strt addr int: %"PRIx64, startAddrL);
-                    //printf("\nend addr int: %"PRIx64, endAddrL);
-
+                    //detecting a new segment
                     if (strcmp(newSegment, lastSegment)) {
                         printf("\n\nSegment: %s", newSegment);
                         printf("%s (%s-%s)", tokens[1], addrTokens[0], addrTokens[1]);
                         printf("\n----------------------------------------------------\n");
                         strcpy(lastSegment, newSegment);
                     }
+                    //seeking to the next address.
                     fseek(pmFP, (sizeof(uint64_t) * getPageNumber(startAddrL)), SEEK_SET);
                     fread(&buf, sizeof(uint64_t), 1, pmFP);
+                    //checks if present using bit shifting
                     if ((buf & PRESENT_MASK)==0){
-                        (void)printf("%s (%#lx): [ram](shift=0, swapped=%llu, present=0, pfn=%llu\n", addrTokens[0], startAddrL, buf&SWAPPED_MASK, buf & PFN_MASK);
+                        (void)printf("%s (%#lx): [ram](shift=0, swapped=%llu, present=0, pfn=%llu)\n", addrTokens[0], startAddrL, buf&SWAPPED_MASK, buf & PFN_MASK);
                         notpresent++;
                     } else
                     {
+                        //checked if swapped, using bit shifting
                         if ((buf& SWAPPED_MASK)==0){
-                            (void)printf("%s (%#lx): [ram](shift=12, swapped=%llu, present=1, pfn=%llu\n", addrTokens[0], startAddrL, buf&SWAPPED_MASK, buf & PFN_MASK);
+                            (void)printf("%s (%#lx): [ram](shift=12, swapped=%llu, present=1, pfn=%llu)\n", addrTokens[0], startAddrL, buf&SWAPPED_MASK, buf & PFN_MASK);
                         }else{
                             (void)printf("%s (%#lx): [swap](type=%llu, offset=%llu)\n", addrTokens[0], startAddrL, buf&SWAPTYPE_MASK, (buf & PFN_MASK)-(buf&SWAPTYPE_MASK));
                             swapped++;
@@ -169,26 +168,3 @@ int main(int argc, char *argv[]) {
     }
     return 0;
 }
-
-//ugly WIP comments
-//for(int i = 0; i < pos-1; i++){
-//printf("%s\n", tokensArray[i][0]);
-//}
-
-/*
- *                     newbuf += bufsize;
-    tokensArray[pos] = tokenizeLine(line);
-    pos++;
-    if (pos >= bufsize){
-        tokensArray = realloc(tokensArray, newbuf * sizeof(char**));
-        if (!tokensArray){
-            printf("allocation error");
-            exit(EXIT_FAILURE);
-        }
-    }
- *
- * get the first token
-
-} else {
-    printf("\nNULL PNTR\n");
-}                    */
